@@ -1,0 +1,3 @@
+interface:
+  display_name: "Agent Coordinator Comms"
+  short_description: "Send direct progress, blocker, and merge handoffs"

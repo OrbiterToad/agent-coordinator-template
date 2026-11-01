@@ -25,11 +25,11 @@ Confirm the repository's owner/name, default branch, branch protection, required
 
 ## Delegation and preflight
 
-Before assigning, check the issue and size, current default-branch SHA, open PRs, branches, worktrees, dirty files, and required checks. Do not assign work that duplicates an existing task or collides with uncommitted changes without first coordinating.
+Before assigning, check the issue and size, current default-branch SHA, open PRs, branches, worktrees, dirty files, and required checks. Do not duplicate an existing issue assignment. Use overlap and dirty-file information to plan integration; shared-file overlap alone does not block assignment or implementation.
 
-Every agent must report preflight completion, blockers/ambiguity, merge readiness, authorized merges, and task completion in its task chat. Require the agent to report promptly with relevant issue/PR, branch/head/base SHA, checks, files involved, and needed decision. The coordinator owns blocker resolution; do not let agents silently wait or contact the user/other agents directly.
+Every agent must send a direct coordinator-chat handoff at preflight completion, material blockers/ambiguity, merge readiness, authorized merges, and task completion. A final answer in the agent's own chat, a title change, or a PR comment is not a handoff. Require the agent to report the issue/PR, branch/head/base SHA, check/review state, files involved, and needed decision. Use `skills/agent-coordinator-comms/SKILL.md` when available. The coordinator owns blocker resolution; do not let agents silently wait or contact the user/other agents directly.
 
-When shared files are busy, look for a genuinely isolated preparatory slice in new files/tests so work can proceed in parallel. Keep the integration step queued until shared-file conflicts clear. Do not create a competing branch or make an isolated slice merely for activity if it does not produce useful, reviewable work.
+Agents may work concurrently on the same files in separate branches/worktrees. Keep implementation moving; a likely conflict changes merge order, not task assignment. Pause a branch only when it is being actively integrated or a real dependency requires it. The coordinator resolves integration conflicts and reruns affected checks.
 
 For long-running checks, ask agents to use a free configured port, keep the command session, and poll that same session to completion. Never tell an agent to kill another worktree's server. Treat a port collision as a coordination issue, not proof that tests failed.
 
@@ -37,7 +37,8 @@ For long-running checks, ask agents to use a free configured port, keep the comm
 
 - The coordinator owns assignment, cross-agent coordination, status reporting, merge decisions, and merge follow-through. Do not implement project tasks directly; use agent chats for implementation.
 - Maintain one ordered queue for PRs to the configured default branch. Consider required reviews/checks, mergeability, branch freshness, likely conflict risk, and compatible merge passes. A green check alone does not make a PR ready.
-- Before a merge pass, tell affected agents the sequence and sync checkpoint. Avoid repeated rebases while the pass is underway. Do not rebase or edit an agent's branch on its behalf unless explicitly assigned.
+- Before a merge pass, tell affected agents the sequence and sync checkpoint. Avoid repeated rebases while the pass is underway. Keep other implementation work moving; ask an owner to pause pushes only while that branch is actively being integrated.
+- The coordinator owns resolving conflicts for queued PRs, using the PR branch or a dedicated integration branch and preserving each agent's intended changes. Report the resulting commit to the owner and rerun required checks before merging.
 - Immediately before merging, refresh the PR head/base, mergeability, required checks, reviews, and branch protection. Merge only through the protected path after every required condition passes. Never bypass branch protection or enable auto-merge unless the user explicitly requests it.
 - Merge PRs one at a time. After each merge, record the resulting default-branch SHA and refresh the next PR. Pause and requeue any PR that becomes stale, conflicted, blocked by review, or missing checks; continue with independent ready work.
 - Keep the issue/task open while its PR is pending. Mark it complete only after merge (or when the user explicitly cancels it and the cancellation is fully handled).
