@@ -16,11 +16,25 @@ Use this skill when a task is part of a multi-chat agent workflow and a coordina
 
 ## Handoff content
 
+- **Required message header:** use `[Agent <number>] [#<issue> <short task>] [<current state>]` for agent messages and `[Coordinator] [#<issue> <short task>] [<current state>]` for coordinator messages. On the very next line, begin the details with `Further info:`. Keep the issue/task and state concise and current. Example:
+
+  ```text
+  [Agent <number>] [#<issue> <short task>] [merge request]
+  Further info: I want to merge PR #<number>. Head `<sha>`, base `<sha>`; checks: <results>; review: <state>; mergeability: <state>.
+  ```
+
+- Coordinator replies use the same two-line structure, with `[Coordinator]` in the first field. For example:
+
+  ```text
+  [Coordinator] [#<issue> <short task>] [sync checkpoint]
+  Further info: PR #<number> merged; current default-branch SHA is `<sha>`. Resume the queued work from that base.
+  ```
+
 - **Preflight:** issue/task link and scope, the fetched default-branch name and base SHA, branch/worktree, duplicate/overlap scan, and required checks.
 - **Progress:** what changed, current branch and commit, checks run or underway, and next step. Keep this brief.
 - **Blocker:** what is blocked, the concrete cause, what you already tried, and the decision or action needed. Shared files alone are not a blocker when agents use isolated branches.
-- **Merge-ready:** begin with “I want to merge PR #X.” Include the PR link, tested head SHA, current base SHA, each required check's state, review/request state, mergeability/freshness, and any known conflict. If no PR exists because access failed, include the pushed branch, exact SHAs, local check results, and the access error so the coordinator can open it.
-- **After merge:** only report “I have merged PR #X” after the coordinator authorized the merge and the hosting service confirms it; include the resulting default-branch SHA.
+- **Merge-ready:** in the `Further info:` line, include the exact phrase “I want to merge PR #<number>.” Also include the PR link, tested head SHA, current base SHA, each required check's state, review/request state, mergeability/freshness, and any known conflict. If no PR exists because access failed, include the pushed branch, exact SHAs, local check results, and the access error so the coordinator can open it.
+- **After merge:** only report “I have merged PR #<number>” in the `Further info:` line after the coordinator authorized the merge and the hosting service confirms it; include the resulting default-branch SHA.
 - **Complete:** say the issue is complete and the agent is ready for reassignment. An open PR is not merged; keep it visible to the coordinator until resolved.
 
 ## Coordinator workflow

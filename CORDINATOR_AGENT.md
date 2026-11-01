@@ -29,6 +29,15 @@ Before assigning, check the issue and size, current default-branch SHA, open PRs
 
 Every agent must send a direct coordinator-chat handoff at preflight completion, material blockers/ambiguity, merge readiness, authorized merges, and task completion. A final answer in the agent's own chat, a title change, or a PR comment is not a handoff. Require the agent to report the issue/PR, branch/head/base SHA, check/review state, files involved, and needed decision. Use `skills/agent-coordinator-comms/SKILL.md` when available. The coordinator owns blocker resolution; do not let agents silently wait or contact the user/other agents directly.
 
+Require every agent-to-coordinator message to begin with `[Agent <number>] [#<issue> <short task>] [<current state>]`; use `[Coordinator]` in the first field for coordinator-to-agent messages. The next line must begin with `Further info:` and contain the details. Use the same format at preflight completion, material progress, blockers or ambiguity, merge requests, after an authorized merge, and task completion/ready for a new assignment. Preserve the exact phrase “I want to merge PR #<number>” in a merge request's details, along with the tested head/base SHAs and current check/review state.
+
+For example, a coordinator sync reply is:
+
+```text
+[Coordinator] [#<issue> <short task>] [sync checkpoint]
+Further info: PR #<number> merged; current default-branch SHA is `<sha>`. Resume the queued work from that base.
+```
+
 Agents may work concurrently on the same files in separate branches/worktrees. Keep implementation moving; a likely conflict changes merge order, not task assignment. Pause a branch only when it is being actively integrated or a real dependency requires it. The coordinator resolves integration conflicts and reruns affected checks.
 
 For long-running checks, ask agents to use a free configured port, keep the command session, and poll that same session to completion. Never tell an agent to kill another worktree's server. Treat a port collision as a coordination issue, not proof that tests failed.

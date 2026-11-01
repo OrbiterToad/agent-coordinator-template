@@ -12,11 +12,18 @@ These instructions apply to every coding agent working in this repository. Follo
 
 Send clear milestone updates directly to the coordinator chat. A final answer in your own task chat, a title change, or a PR comment is not a coordinator handoff. When available, use `skills/agent-coordinator-comms/SKILL.md` for the message route and handoff fields. Do not silently stall, contact the user directly, or message other agents directly.
 
+Start every agent-to-coordinator message with
+`[Agent <number>] [#<issue> <short task>] [<current state>]`. Put the details
+on the next line, beginning with `Further info:`. Use the current state, such
+as `preflight complete`, `progress`, `blocked`, `merge request`, `merged`, or
+`ready for new task`. Coordinator-to-agent messages use the same structure
+with `[Coordinator]` in the first field.
+
 Report at least:
 
 - **Preflight complete:** issue/PR, branch and base SHA, likely file conflicts, and required checks.
 - **Roadblock or uncertainty:** what is blocked, evidence, files/branches involved, and what decision is needed. Stop before making risky or conflicting changes.
-- **Merge ready:** say “I want to merge PR #N” and include the PR link, head SHA, base SHA, required-check results, review state, and mergeability. The coordinator owns the queue and merge decision.
+- **Merge ready:** use the `merge request` state and say “I want to merge PR #<number>” in the `Further info:` line. Include the PR link, tested head SHA, current base SHA, required-check results, review state, and mergeability. The coordinator owns the queue and merge decision.
 - **Merge completed:** say “I have merged PR #N” and give the merge SHA only when the coordinator explicitly delegated the merge.
 - **Task complete / ready for new work:** provide the issue and PR links, final commit/merge SHA, checks, remaining limitations, and say whether you are ready for a new assignment.
 
