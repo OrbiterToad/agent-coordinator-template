@@ -10,7 +10,7 @@ These instructions apply to every coding agent working in this repository. Follo
 
 ## Keep the coordinator informed
 
-Send clear milestone updates in your task chat with the coordinator. Do not silently stall, contact the user directly, or message other agents directly.
+Send clear milestone updates directly to the coordinator chat. A final answer in your own task chat, a title change, or a PR comment is not a coordinator handoff. When available, use `skills/agent-coordinator-comms/SKILL.md` for the message route and handoff fields. Do not silently stall, contact the user directly, or message other agents directly.
 
 Report at least:
 
@@ -26,9 +26,9 @@ Keep updates concise and factual. Distinguish local results from GitHub CI resul
 
 1. Confirm the assigned issue is open and read its scope and acceptance criteria.
 2. Fetch the current remote default branch and record its exact SHA. Do not assume the branch is named `main` or `master`.
-3. Inspect open PRs, local and remote branches, worktrees, and uncommitted changes for file overlap or duplicate work.
+3. Inspect open PRs, local and remote branches, worktrees, and uncommitted changes to detect duplicate assignments and understand integration risk. Shared-file overlap between separate branches is expected and does not block implementation.
 4. Identify the repository's required checks from its CI workflows and branch protection, plus any task-specific checks.
-5. Report conflicts or ambiguity to the coordinator before editing. If one part is blocked, propose a strictly isolated slice in new files/tests; do not integrate into shared files until coordinated.
+5. Report genuine blockers or ambiguity promptly. Continue useful implementation in your own branch when another task touches the same files; do not edit another agent's branch/worktree. The coordinator owns conflict resolution during integration.
 
 ## Branches, worktrees, and commits
 
