@@ -62,7 +62,10 @@ separate.
    coordinator guide. `AGENTS.md` tells agents to read `AGENTS.project.md`
    and to let it win where it is more specific.
 
-5. Configure the repository secret `AGENT_TEMPLATE_TOKEN` with a token that
+5. Exclude the synced files from the project's own formatter (for example in
+   `.prettierignore`) so reformatting cannot drift them from the template.
+
+6. Configure the repository secret `AGENT_TEMPLATE_TOKEN` with a token that
    can read this template repository and open pull requests in the project.
    The workflow's default `GITHUB_TOKEN` cannot read another private
    repository. No token value belongs in the repository.
