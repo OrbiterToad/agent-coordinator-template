@@ -16,7 +16,7 @@ Use this skill when a task is part of a multi-chat agent workflow and a coordina
 
 ## Handoff content
 
-- **Required message header:** use `[Agent <number>] [#<issue> <short task>] [<current state>]` for agent messages and `[Coordinator] [#<issue> <short task>] [<current state>]` for coordinator messages. On the very next line, begin the details with `Further info:`. Keep the issue/task and state concise and current. Example:
+- **Required message header:** use `[Agent <number>] [#<issue> <short task>] [<current state>]` for agent messages and `[Coordinator] [#<issue> <short task>] [<current state>]` for coordinator messages. On the very next line, begin the details with `Further info:`. Keep the issue/task and state concise and current, choosing the state from `assignment`, `preflight complete`, `progress`, `blocked`, `merge request`, `decision`, `changes requested`, `merged`, or `ready for new task`, exactly as `AGENTS.md` defines them. Example:
 
   ```text
   [Agent <number>] [#<issue> <short task>] [merge request]
@@ -26,7 +26,7 @@ Use this skill when a task is part of a multi-chat agent workflow and a coordina
 - Coordinator replies use the same two-line structure, with `[Coordinator]` in the first field. For example:
 
   ```text
-  [Coordinator] [#<issue> <short task>] [sync checkpoint]
+  [Coordinator] [#<issue> <short task>] [progress]
   Further info: PR #<number> merged; current default-branch SHA is `<sha>`. Resume the queued work from that base.
   ```
 
@@ -41,7 +41,8 @@ Use this skill when a task is part of a multi-chat agent workflow and a coordina
 
 - Acknowledge direct handoffs and track their issue, branch, PR, head/base revisions, checks, and next action.
 - Keep implementation moving across separate branches, including overlapping files. Queue conflicts for integration; do not tell agents to wait solely because another branch edits the same file.
-- Before merging, refresh the PR, required checks, reviews, freshness, and mergeability. Resolve integration conflicts in coordination with the owner, rerun required checks, merge only through the repository's protected path, then send the resulting default-branch SHA to affected agents.
+- Before merging, refresh the PR, required checks, reviews, freshness, and mergeability. Get integration conflicts resolved by delegating them to an agent in the PR branch or a dedicated integration branch, preserving every side's intended change; rerun required checks, merge only through the repository's protected path, then send the resulting default-branch SHA to affected agents.
+- In status reports, pair each percentage with its color marker and a ten-cell bar, as `CORDINATOR_AGENT.md` specifies (for example `🟢 ████████░░ 80%`), and keep agent chat titles updated on every state change.
 - Use `wait_threads` for compact progress snapshots; use `read_thread` when a handoff needs detail. Do not treat chat titles or summaries as authoritative status.
 
 This skill uses the Codex chat-messaging tools as the communication channel. It does not create a persistent socket, daemon, or background monitor; those require a separate transport service and deployment.
