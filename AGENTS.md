@@ -160,6 +160,10 @@ Choose a state from `assignment`, `preflight complete`, `progress`,
 example `docs/COORDINATOR_GUIDE.md`), it holds the state meanings and
 copyable lifecycle templates.
 
+Respond promptly to direct coordinator questions and instructions. Acknowledge
+the request, answer each question, and state the action or next step. If no
+progress is possible, identify the concrete blocker and next useful step.
+
 Lead with the result, request, or decision. Use neutral, direct sentences and
 name who acts next when action is needed. Report progress only when a
 milestone, evidence, risk, or next action changes; avoid repeated status,
